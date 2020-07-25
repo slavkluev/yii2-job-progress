@@ -1,23 +1,24 @@
 {
-    "name": ":vendor/:package_name",
+    "name": "slavkluev/yii2-job-progress",
     "type": "library",
-    "description": ":package_description",
+    "description": "",
     "keywords": [
-        ":vendor",
-        ":package_name"
+        "slavkluev",
+        "yii2-job-progress"
     ],
-    "homepage": "https://github.com/:vendor/:package_name",
+    "homepage": "https://github.com/slavkluev/yii2-job-progress",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": ":author_website",
+            "name": "Viacheslav Kliuev",
+            "email": "slavkluev@yandex.ru",
+            "homepage": "https://github.com/slavkluev",
             "role": "Developer"
         }
     ],
     "require": {
-        "php" : "~7.2"
+        "php": "~7.2",
+        "yiisoft/yii2-queue": "^2.3"
     },
     "require-dev": {
         "phpunit/phpunit" : ">=8.0",
@@ -25,12 +26,12 @@
     },
     "autoload": {
         "psr-4": {
-            ":vendor\\:package_name\\": "src"
+            "slavkluev\\JobProgress\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            ":vendor\\:package_name\\": "tests"
+            "slavkluev\\JobProgress\\": "tests"
         }
     },
     "scripts": {
