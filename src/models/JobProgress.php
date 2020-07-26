@@ -45,7 +45,7 @@ class JobProgress extends ActiveRecord
         return $this->getProgressMax() !== 0 ? ($this->getProgressNow() / $this->getProgressMax()) * 100 : 0;
     }
 
-    public static function findByJobId($jobId): JobProgress
+    public static function findByJobId($jobId): ?JobProgress
     {
         return static::findOne(['job_id' => $jobId]);
     }

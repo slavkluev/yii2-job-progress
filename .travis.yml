@@ -19,6 +19,7 @@ matrix:
 
 before_script:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - php tests/yii migrate --interactive=0
 
 script:
   - vendor/bin/phpcs --standard=psr2 src/
