@@ -6,6 +6,8 @@ use yii\db\Migration;
 
 class m200725_141600_create_job_progress_table extends Migration
 {
+    public $tableName = '{{%job_progress}}';
+
     public function up()
     {
         $tableOptions = null;
@@ -14,16 +16,18 @@ class m200725_141600_create_job_progress_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('{{%job_progress}}', [
+        $this->createTable($this->tableName, [
             'id' => $this->primaryKey(),
             'job_id' => $this->integer()->notNull(),
             'progress_max' => $this->integer()->notNull(),
             'progress_now' => $this->integer()->notNull(),
         ], $tableOptions);
+
+        $this->createIndex('job_id', $this->tableName, 'job_id');
     }
 
     public function down()
     {
-        $this->dropTable('{{%job_progress}}');
+        $this->dropTable($this->tableName);
     }
 }

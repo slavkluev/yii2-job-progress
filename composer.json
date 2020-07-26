@@ -1,10 +1,14 @@
 {
     "name": "slavkluev/yii2-job-progress",
-    "type": "library",
-    "description": "",
+    "type": "yii2-extension",
+    "description": "A Yii2 extension lets you know the progress of the job in a queue.",
     "keywords": [
         "slavkluev",
-        "yii2-job-progress"
+        "yii2-job-progress",
+        "yii2",
+        "queue",
+        "job",
+        "progress"
     ],
     "homepage": "https://github.com/slavkluev/yii2-job-progress",
     "license": "MIT",
@@ -40,6 +44,7 @@
         "fix-style": "phpcbf src tests"
     },
     "extra": {
+        "bootstrap": "slavkluev\\JobProgress\\Bootstrap",
         "branch-alias": {
             "dev-master": "1.0-dev"
         }

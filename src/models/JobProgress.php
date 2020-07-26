@@ -21,22 +21,31 @@ class JobProgress extends ActiveRecord
         ];
     }
 
+    /**
+     * @return int
+     */
     public function getProgressMax(): int
     {
         return $this->progress_max;
     }
 
+    /**
+     * @return int
+     */
     public function getProgressNow(): int
     {
         return $this->progress_now;
     }
 
+    /**
+     * @return float
+     */
     public function getPercent(): float
     {
         return $this->getProgressMax() !== 0 ? ($this->getProgressNow() / $this->getProgressMax()) * 100 : 0;
     }
 
-    public static function findIdentityByJob($jobId): JobProgress
+    public static function findByJobId($jobId): JobProgress
     {
         return static::findOne(['job_id' => $jobId]);
     }

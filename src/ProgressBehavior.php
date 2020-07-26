@@ -11,8 +11,25 @@ use yii\queue\Queue;
 
 class ProgressBehavior extends Behavior
 {
+    /**
+     * The default value of max number of progress.
+     *
+     * @var int
+     */
     public $progressMax = 10;
+
+    /**
+     * The default value of current number of progress.
+     *
+     * @var int
+     */
     public $progressNow = 0;
+
+    /**
+     * The parameter is responsible for removing the progress after job execution.
+     *
+     * @var bool
+     */
     public $deleteAfterExecution = false;
 
     /**
@@ -23,71 +40,89 @@ class ProgressBehavior extends Behavior
     public function events()
     {
         return [
-            Queue::EVENT_BEFORE_EXEC => function (ExecEvent $event) {
-                $this->jobProgress = new JobProgress([
-                    'job_id' => $this->owner->getPrimaryKey(),
-                    'progress_max' => $this->progressMax,
-                    'progress_now' => $this->progressNow,
-                ]);
-                $this->jobProgress->save();
-            },
-            Queue::EVENT_AFTER_EXEC => function (ExecEvent $event) {
-                if ($this->deleteAfterExecution) {
-                    $this->jobProgress->delete();
-                }
-            },
+            Queue::EVENT_BEFORE_EXEC => 'beforeExec',
+            Queue::EVENT_AFTER_EXEC => 'afterExec',
         ];
     }
 
+    public function beforeExec(ExecEvent $event)
+    {
+        $this->jobProgress = new JobProgress([
+            'job_id' => $event->id,
+            'progress_max' => $this->progressMax,
+            'progress_now' => $this->progressNow,
+        ]);
+        $this->jobProgress->save();
+    }
+
+    public function afterExec(ExecEvent $event)
+    {
+        if ($this->deleteAfterExecution) {
+            $this->jobProgress->delete();
+        }
+    }
+
     /**
-     * @param int $value
-     *
-     * @throws \Throwable
+     * @return int
      */
-    protected function setProgressMax(int $value)
+    public function getProgressMax(): int
+    {
+        return $this->jobProgress->getProgressMax();
+    }
+
+    /**
+     * @return int
+     */
+    public function getProgressNow(): int
+    {
+        return $this->jobProgress->getProgressNow();
+    }
+
+    /**
+     * @return float
+     */
+    public function getPercent(): float
+    {
+        return $this->jobProgress->getPercent();
+    }
+
+    /**
+     * Update the max number of progress.
+     *
+     * @param int $value
+     */
+    public function setProgressMax(int $value)
     {
         $this->update(['progress_max' => $value]);
     }
 
     /**
-     * @param int $value
+     * Update the current number of progress.
      *
-     * @throws \Throwable
+     * @param int $value
      */
-    protected function setProgressNow(int $value)
+    public function setProgressNow(int $value)
     {
         $this->update(['progress_now' => $value]);
     }
 
     /**
-     * @param int $offset
+     * Increase current number of progress by $offset.
      *
-     * @throws \Throwable
+     * @param int $offset
      */
-    protected function incrementProgress(int $offset = 1)
+    public function incrementProgress(int $offset = 1)
     {
         $value = $this->getProgressNow() + $offset;
         $this->setProgressNow($value);
     }
 
     /**
-     * @param $attributes
-     *
-     * @throws \Throwable
+     * @param array $attributes
      */
-    protected function update($attributes)
+    protected function update(array $attributes)
     {
         $this->jobProgress->setAttributes($attributes);
         $this->jobProgress->update();
-    }
-
-    protected function getProgressMax()
-    {
-        return $this->jobProgress->getProgressMax();
-    }
-
-    protected function getProgressNow()
-    {
-        return $this->jobProgress->getProgressNow();
     }
 }
