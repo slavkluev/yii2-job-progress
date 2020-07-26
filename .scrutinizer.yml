@@ -10,7 +10,9 @@ build:
                 override: [php-scrutinizer-run]
 
 filter:
-    excluded_paths: [tests/*]
+    excluded_paths:
+        - tests/*
+        - src/migrations/*
 
 checks:
     php:
